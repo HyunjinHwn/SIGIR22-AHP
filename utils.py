@@ -13,7 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     
     ##### training hyperparameter #####
-    parser.add_argument("--dataset_name", type=str, default='cora', help='dataset name')
+    parser.add_argument("--dataset_name", type=str, default='cora', help='dataset name: cora, coraA, citeseer, pubmed, dblp, dblpA')
     parser.add_argument("--seed", dest='fix_seed', action='store_const', default=False, const=True, help='Fix seed for reproducibility and fair comparison.')
     parser.add_argument("--gpu", type=int, default=0, help='gpu number. -1 if cpu else gpu number')
     parser.add_argument("--exp_num", default=1, type=int, help='number of experiments')
@@ -28,30 +28,20 @@ def parse_args():
     
     
     ##### Discriminator architecture #####
-    parser.add_argument("--model", default='hnhn', type=str, help='discriminator')
+    parser.add_argument("--model", default='hnhn', type=str, help='discriminator: hnhn')
     parser.add_argument("--n_layers", default=1, type=int, help='number of layers')
-    parser.add_argument("--alpha_e", default=0, type=float, help='alpha')
-    parser.add_argument("--alpha_v", default=0, type=float, help='alpha')
-    parser.add_argument("--dim_hidden", default=400, type=int, help='Dimension of hidden vector')
-    parser.add_argument("--dim_vertex", default=400, type=int, help='Dimension of vertex hidden vector')
-    parser.add_argument("--dim_edge", default=400, type=int, help='Dimension of edge hidden vector')
+    parser.add_argument("--alpha_e", default=0, type=float, help='normalization term for hnhn')
+    parser.add_argument("--alpha_v", default=0, type=float, help='normalization term for hnhn')
+    parser.add_argument("--dim_hidden", default=400, type=int, help='dimension of hidden vector')
+    parser.add_argument("--dim_vertex", default=400, type=int, help='dimension of vertex hidden vector')
+    parser.add_argument("--dim_edge", default=400, type=int, help='dimension of edge hidden vector')
     
     ##### Generator architecture #####
-    parser.add_argument("--gen", type=str, default='MLP', help='set2set, MLP')
+    parser.add_argument("--gen", type=str, default='MLP', help='generator: MLP')
     
     opt = parser.parse_args()
     print(opt.gpu)
     return opt
-
-def get_label_percent(dataset_name):
-    if dataset_name == 'cora':
-        return .052
-    elif dataset_name == 'citeseer':
-        return .15 
-    elif dataset_name == 'dblp':
-        return .04
-    else:
-        raise Exception('dataset not supported')
      
 def gen_size_dist(hyperedges):
     size_dist = {}
